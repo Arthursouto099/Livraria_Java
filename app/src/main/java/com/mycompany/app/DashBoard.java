@@ -5,6 +5,9 @@
 package com.mycompany.app;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import com.mycompany.app.contactModel.User;
+import com.mycompany.app.contactModel.ContactModel;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author ARTHURSANTOSTAVARESS
@@ -13,19 +16,34 @@ public class DashBoard extends javax.swing.JFrame {
     String user;
     String emailByUser;
     String password;
-    private ArrayList<Book> lib; 
+    ArrayList<User> userList;
+    DefaultTableModel userTable;
     /**
      * Creates new form DashBoard
      * @param user
      * @param emailByUser
      * @param password
+     * @param  userList
      */
-    public DashBoard(String user, String emailByUser, String password) {
+    public DashBoard(String user, String emailByUser, String password, ArrayList<User> userList) {
         initComponents();
         this.user = user;
         this.emailByUser = emailByUser;
-        this.password = password;
-        this.lib = new ArrayList<>(); 
+        this.password = password; 
+        this.userList = userList;
+    
+        
+        userTable = new DefaultTableModel();
+        userTable.addColumn("ID");
+        userTable.addColumn("NAME");
+        userTable.addColumn("CONTACT");
+        if(this.userList != null) {
+          for(int i = 0; i < this.userList.size(); i++) {
+              this.userTable.addRow(new Object[]{this.userList.get(i).getId(), this.userList.get(i).getName(), this.userList.get(i).getContact()});
+          }
+        }
+        this.TableListUsers.setModel(userTable);
+        
     }
 
     /**
@@ -38,106 +56,87 @@ public class DashBoard extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        titleField = new javax.swing.JTextField();
-        codeField = new javax.swing.JTextField();
-        authorField = new javax.swing.JTextField();
-        RegisterBookButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        findBookButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TableListUsers = new javax.swing.JTable();
+        findByIDButton = new javax.swing.JButton();
+        findAllButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        userItens = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        RegisterBookButton.setText("Register Book");
-        RegisterBookButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RegisterBookButtonActionPerformed(evt);
+        TableListUsers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        });
+        ));
+        jScrollPane1.setViewportView(TableListUsers);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel1.setText("CODE");
+        findByIDButton.setText("Buscar po ID");
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel2.setText("TITLE");
+        findAllButton.setText("Buscar Todos");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel3.setText("AUTHOR");
-
-        findBookButton.setText("Buscar Por Código");
-        findBookButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                findBookButtonActionPerformed(evt);
-            }
-        });
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("USUARIOS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(68, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(authorField, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(codeField, javax.swing.GroupLayout.PREFERRED_SIZE, 489, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addContainerGap(95, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(findBookButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(RegisterBookButton)
-                        .addGap(98, 98, 98))))
+                        .addComponent(findByIDButton, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(findAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(codeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(titleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(1, 1, 1)
-                .addComponent(authorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(RegisterBookButton)
-                    .addComponent(findBookButton))
-                .addContainerGap(42, Short.MAX_VALUE))
+                    .addComponent(findByIDButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(findAllButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 104, Short.MAX_VALUE))
         );
 
-        jMenu1.setText("File");
+        jMenuBar2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenuBar2.setForeground(new java.awt.Color(102, 102, 102));
+        jMenuBar2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jMenuItem1.setText("jMenuItem1");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jMenu1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenu1.setText("Utilidades");
+
+        userItens.setText("Users");
+        userItens.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                userItensActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(userItens);
 
         jMenuBar2.add(jMenu1);
-
-        jMenu3.setText("Edit");
-        jMenuBar2.add(jMenu3);
 
         setJMenuBar(jMenuBar2);
 
@@ -145,7 +144,7 @@ public class DashBoard extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,45 +154,11 @@ public class DashBoard extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void findBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findBookButtonActionPerformed
-        String code = this.codeField.getText();
-
-        if(code.equals("")) {
-            JOptionPane.showMessageDialog(this, "Você precisa digitar um código válido.");
-        }
-
-        for(Book book : lib) {
-            if(book.getCode().equals(code)) {
-                Book[] firstBook = new Book[1];
-                firstBook[0] = book;
-
-                BookInfo bookInfo = new BookInfo(firstBook);
-                bookInfo.setVisible(true);
-            }
-        }
-    }//GEN-LAST:event_findBookButtonActionPerformed
-
-    private void RegisterBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegisterBookButtonActionPerformed
-        String code = this.codeField.getText();
-        String title = this.titleField.getText();
-        String author = this.authorField.getText();
-
-        this.lib.add(new Book(title, code, author));
-        this.codeField.setText("");
-        this.titleField.setText("");
-        this.authorField.setText("");
-    }//GEN-LAST:event_RegisterBookButtonActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        Book[] list = new Book[this.lib.size()];
-        for(int i = 0; i < list.length; i++) {
-            list[i] = this.lib.get(i);
-        }
-        
-         BookInfo bookInfo = new BookInfo(list);
-         bookInfo.setVisible(true);
-        
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void userItensActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userItensActionPerformed
+        this.dispose();
+        ContactModel newModel = new ContactModel(this.userList); 
+        newModel.setVisible(true);
+    }//GEN-LAST:event_userItensActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,18 +192,14 @@ public class DashBoard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton RegisterBookButton;
-    private javax.swing.JTextField authorField;
-    private javax.swing.JTextField codeField;
-    private javax.swing.JButton findBookButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JTable TableListUsers;
+    private javax.swing.JButton findAllButton;
+    private javax.swing.JButton findByIDButton;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar2;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField titleField;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem userItens;
     // End of variables declaration//GEN-END:variables
 }
